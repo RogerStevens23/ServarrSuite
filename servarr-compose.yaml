@@ -79,26 +79,29 @@ services:
       image: lscr.io/linuxserver/jellyfin:latest
       container_name: jellyfin
       environment:
-        - PUID=${UID}
+        - PUID=1000
         - PGID=13000
         - UMASK=002
         - TZ=EST
       volumes:
         - /home/rogerstevens/ServarrSuite/config/jellyfin-config:/config
-        - /mnt/samsung870/data/:/data
+        - /mnt/samsung870/data/media:/data/media
       ports:
-        - "8096:8096"
+        - "9000:9000"
       restart: unless-stopped
 
     jellyseerr:
       image: fallenbagel/jellyseerr:latest
       container_name: jellyseerr
       environment:
+        - PUID=13012
+        - PGID=13012
+        - UMASK=002
         - LOG_LEVEL=debug
         - TZ=EST
       volumes:
         - /home/rogerstevens/ServarrSuite/config:/app/config
-        - /mnt/samsung870/data:/data
+        - /mnt/samsung870/data/media:/data/media
       ports:
         - 5055:5055
       restart: unless-stopped
