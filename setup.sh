@@ -19,7 +19,6 @@ sudo usermod -a -G mediacenter jellyseerr
 
 # Make directories
 sudo mkdir -pv config/{sonarr,radarr,lidarr,readarr,prowlarr,qbittorrent,jellyseerr}-config
-sudo mkdir -pv data/{torrents,media}/{tv,movies,music,books}
 
 # Set permissions
 sudo chmod -R 775 data/
