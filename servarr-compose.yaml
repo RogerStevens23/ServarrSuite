@@ -1,8 +1,40 @@
 version: "3.1"
 services:
+    gluetun:
+      image: qmcgaw/gluetun:latest
+      container_name: gluetun
+      cap_add:
+        - NET_ADMIN
+      network_mode: bridge
+      ports:
+        - 8888:8888/tcp # HTTP proxy
+        - 8388:8388/tcp # Shadowsocks
+        - 8388:8388/udp # Shadowsocks
+        - 8001:8001/tcp # Built-in HTTP control server
+        - 7878:7878 # radarr
+        - 8989:8989 # sonarr
+        - 8686:8686 # lidarr
+        - 8787:8787 # Readarr
+        - 5055:5055 # jellyseer
+        - 5299:5299 # Lazylibrarian
+      environment:
+        - VPN_SERVICE_PROVIDER=expressvpn
+        - OPENVPN_USER= njwk7851veqb6q3yhvpzgmpj
+        - OPENVPN_PASSWORD= uvuea6ymbh2lfccykwygu8ov
+        - SERVER_COUNTRIES=Netherlands, USA
+        - OWNED=yes
+        - HTTPPROXY=on
+        - PUID=1000
+        - PGID=1000
+        - TZ=EST
+      volumes:
+        - /ServarrSuite/config/gluetun-config:/config
+      restart: unless-stopped
+
     sonarr:
       image: lscr.io/linuxserver/sonarr:latest
       container_name: sonarr
+      network_mode: "service:gluetun"
       environment:
         - PUID=13001
         - PGID=13000
@@ -18,6 +50,7 @@ services:
     radarr:
       image: lscr.io/linuxserver/radarr:latest
       container_name: radarr
+      network_mode: "service:gluetun"
       environment:
         - PUID=13002
         - PGID=13000
@@ -33,6 +66,7 @@ services:
     lidarr:
       image: lscr.io/linuxserver/lidarr:latest
       container_name: lidarr
+      network_mode: "service:gluetun"
       environment:
         - PUID=13003
         - PGID=13000
@@ -48,6 +82,7 @@ services:
     readarr:
       image: lscr.io/linuxserver/readarr:develop
       container_name: readarr
+      network_mode: "service:gluetun"
       environment:
         - PUID=13004
         - PGID=13000
@@ -60,9 +95,25 @@ services:
         - "8787:8787"
       restart: unless-stopped
 
+    lazylibrarian:
+      image: ghcr.io/linuxserver/lazylibrarian:latest
+      container_name: lazylibrarian
+      network_mode: "service:gluetun"
+      environment:
+        - PUID=13013
+        - PGID=13000
+        - TZ=EST
+      volumes:
+        - /ServarrSuite/config/lazylibrarian-config:/config
+        - /mnt/samsung870/data:/data
+      ports:
+        - "5299:5299"
+      restart: unless-stopped
+
     prowlarr:
       image: lscr.io/linuxserver/prowlarr:develop
       container_name: prowlarr
+      network_mode: "service:gluetun"
       environment:
         - PUID=13006
         - PGID=13000
@@ -74,7 +125,26 @@ services:
       ports:
         - "9696:9696"
       restart: unless-stopped
-    
+
+    qbittorrent:
+      image: lscr.io/linuxserver/qbittorrent:latest
+      container_name: qbittorrent
+      network_mode: "service:gluetun"
+      environment:
+        - PUID=13007
+        - PGID=13000
+        - UMASK=002
+        - TZ=EST
+        - WEBUI_PORT=8080
+      volumes:
+        - /ServarrSuite/config/qbittorrent-config:/config
+        - /mnt/samsung870/data/torrents:/data/torrents
+      ports:
+        - "8080:8080"
+        - "6881:6881"
+        - "6881:6881/udp"
+      restart: unless-stopped
+          
     jellyfin:
       image: lscr.io/linuxserver/jellyfin:latest
       container_name: jellyfin
@@ -93,6 +163,7 @@ services:
     jellyseerr:
       image: fallenbagel/jellyseerr:latest
       container_name: jellyseerr
+      network_mode: "service:gluetun"
       environment:
         - PUID=13012
         - PGID=13012
@@ -104,34 +175,4 @@ services:
         - /mnt/samsung870/data/media:/data/media
       ports:
         - 5055:5055
-      restart: unless-stopped
-
-    qbittorrent:
-      image: lscr.io/linuxserver/qbittorrent:latest
-      container_name: qbittorrent
-      environment:
-        - PUID=13007
-        - PGID=13000
-        - UMASK=002
-        - TZ=EST
-        - WEBUI_PORT=8080
-      volumes:
-        - /ServarrSuite/config/qbittorrent-config:/config
-        - /mnt/samsung870/data/torrents:/data/torrents
-      ports:
-        - "8080:8080"
-        - "6881:6881"
-        - "6881:6881/udp"
-      restart: unless-stopped
-
-    gluetun:
-      image: qmcgaw/gluetun
-      container_name: gluetun
-      cap_add:
-        - NET_ADMIN
-      environment:
-        - VPN_SERVICE_PROVIDER=expressvpn
-        - OPENVPN_USER= njwk7851veqb6q3yhvpzgmpj
-        - OPENVPN_PASSWORD= uvuea6ymbh2lfccykwygu8ov
-        - SERVER_COUNTRIES=Netherlands, USA
       restart: unless-stopped
