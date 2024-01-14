@@ -123,3 +123,14 @@ services:
         - "6881:6881"
         - "6881:6881/udp"
       restart: unless-stopped
+
+    gluetun:
+    image: qmcgaw/gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VPN_SERVICE_PROVIDER=expressvpn
+      - OPENVPN_USER= njwk7851veqb6q3yhvpzgmpj
+      - OPENVPN_PASSWORD= uvuea6ymbh2lfccykwygu8ov
+      - SERVER_COUNTRIES=Netherlands, USA
+    restart: unless-stopped
