@@ -14,18 +14,18 @@ services:
         - 7878:7878 # radarr
         - 8989:8989 # sonarr
         - 8686:8686 # lidarr
-        - 8787:8787 # Readarr
+        - 8787:8787 # readarr
+        - 9696:9696 # prowlarr
         - 5055:5055 # jellyseer
         - 5299:5299 # Lazylibrarian
-        - "8080:8080" # qbittorrent
-        - "6881:6881" # qbittorrent
-        - "6881:6881/udp" # qbittorrent
+        - 8080:8080 # qbittorrent
+        - 6881:6881 # qbittorrent
+        - 6881:6881/udp # qbittorrent
       environment:
         - VPN_SERVICE_PROVIDER=expressvpn
         - OPENVPN_USER= njwk7851veqb6q3yhvpzgmpj
         - OPENVPN_PASSWORD= uvuea6ymbh2lfccykwygu8ov
-        - SERVER_COUNTRIES=Netherlands, USA
-        - OWNED=yes
+        - SERVER_COUNTRIES=Netherlands
         - HTTPPROXY=on
         - PUID=1000
         - PGID=1000
@@ -144,7 +144,7 @@ services:
         - /ServarrSuite/config/jellyfin-config:/config
         - /mnt/samsung870/data/media:/data/media
       ports:
-        - "9000:9000"
+        - 8096:8096
       restart: unless-stopped
 
     jellyseerr:
