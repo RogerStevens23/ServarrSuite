@@ -145,7 +145,7 @@ services:
         - /mnt/samsung870/data/media:/data/media
       ports:
         - 8096:8096
-      restart: unlevss-stopped
+      restart: unless-stopped
 
     jellyseerr:
       image: fallenbagel/jellyseerr:latest
