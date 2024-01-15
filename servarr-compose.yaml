@@ -46,8 +46,6 @@ services:
       volumes:
         - /ServarrSuite/config/sonarr-config:/config
         - /mnt/samsung870/data:/data
-      ports:
-        - "8989:8989"  
       restart: unless-stopped
 
     radarr:
@@ -62,8 +60,6 @@ services:
       volumes:
         - /ServarrSuite/config/radarr-config:/config
         - /mnt/samsung870/data:/data
-      ports:
-        - "7878:7878"
       restart: unless-stopped
 
     lidarr:
@@ -78,8 +74,6 @@ services:
       volumes:
         - /ServarrSuite/config/lidarr-config:/config
         - /mnt/samsung870/data:/data
-      ports:
-        - "8686:8686"
       restart: unless-stopped
       
     readarr:
@@ -94,8 +88,6 @@ services:
       volumes:
         - /ServarrSuite/config/readarr-config:/config
         - /mnt/samsung870/data:/data
-      ports:
-        - "8787:8787"
       restart: unless-stopped
 
     lazylibrarian:
@@ -109,8 +101,6 @@ services:
       volumes:
         - /ServarrSuite/config/lazylibrarian-config:/config
         - /mnt/samsung870/data:/data
-      ports:
-        - "5299:5299"
       restart: unless-stopped
 
     prowlarr:
@@ -125,8 +115,6 @@ services:
       volumes:
         - /ServarrSuite/config/prowlarr-config:/config
         - /mnt/samsung870/data:/data
-      ports:
-        - "9696:9696"
       restart: unless-stopped
 
     qbittorrent:
@@ -142,10 +130,6 @@ services:
       volumes:
         - /ServarrSuite/config/qbittorrent-config:/config
         - /mnt/samsung870/data/torrents:/data/torrents
-      ports:
-        - "8080:8080"
-        - "6881:6881"
-        - "6881:6881/udp"
       restart: unless-stopped
           
     jellyfin:
@@ -176,6 +160,4 @@ services:
       volumes:
         - /ServarrSuite/config:/app/config
         - /mnt/samsung870/data/media:/data/media
-      ports:
-        - 5055:5055
       restart: unless-stopped
